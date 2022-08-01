@@ -9,16 +9,26 @@ const {
   loginUserController,
 } = require('./controllers/user');
 
-const app = express();
+const {
+  NewNoteController,
+  getNotesController,
+  getSingleNoteController,
+  deleteNoteController,
+} = require('./controllers/notes');
 
+const app = express();
+app.use(express.json());
 app.use(morgan('dev'));
 //rutas Users
-app.post('/user', NewUserController);
-app.get('./user/:id', getUserController);
+app.post('/users', NewUserController);
+app.get('./users/:id', getUserController);
 app.post('/login', loginUserController);
 
 //Rutas Notes
-app.get('/', getNoteController);
+app.get('/', getNotesController);
+app.post('/', NewNoteController);
+app.get('/notes/:id', getSingleNoteController);
+app.delete('/notes/:id', deleteNoteController);
 
 //middleware de 404
 app.use((req, res) => {
