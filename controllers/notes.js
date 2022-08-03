@@ -1,6 +1,7 @@
-//importaciones
-const { generateError } = require('./helpers');
+//*importaciones
+const { generateError } = require('../helpfun');
 
+//*peticion gestion de nueva nota
 const NewNoteController = async (req, res, next) => {
   try {
     res.send({
@@ -11,6 +12,8 @@ const NewNoteController = async (req, res, next) => {
     next(error);
   }
 };
+
+//*peticon gestion de nota id
 const getSingleNoteController = async (req, res, next) => {
   try {
     res.send({
@@ -21,6 +24,8 @@ const getSingleNoteController = async (req, res, next) => {
     next(error);
   }
 };
+
+//*peticon gestion de eliminar nota
 const deleteNoteController = async (req, res, next) => {
   try {
     res.send({
@@ -31,6 +36,7 @@ const deleteNoteController = async (req, res, next) => {
     next(error);
   }
 };
+//*peticion consulta de notas
 const getNotesController = async (req, res, next) => {
   try {
     res.send({
@@ -41,7 +47,7 @@ const getNotesController = async (req, res, next) => {
     next(error);
   }
 };
-//exportaciones
+//*exportaciones
 module.exports = {
   NewNoteController,
   getNotesController,

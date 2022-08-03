@@ -1,17 +1,17 @@
-require('dotenv').config(); //utilizamos el env y requerimos su configuracion
+require('dotenv').config(); //*utilizamos el env y requerimos su configuracion
 
-//definimos una constante para su utilizacion
+//*definimos una constante para su utilizacion
 const { getConnection } = require('./db');
 
-//definimos un funcion asincronas para abrir, gestionar,crear y borrar tablas/ y cerrar una conexion a la base de datos desde la cola de conexiones
+//*definimos un funcion asincronas para abrir, gestionar,crear y borrar tablas/ y cerrar una conexion a la base de datos desde la cola de conexiones
 async function main() {
   let conexiones;
   try {
     conexiones = await getConnection();
-    //Borrado de tablas existentes
+    //*Borrado de tablas existentes
     await conexiones.query('DROP TABLE IF EXISTS notes');
     await conexiones.query('DROP TABLE IF EXISTS users');
-    //creacion y resteo de tablas desde 0
+    //*creacion y resteo de tablas desde 0
     await conexiones.query(`
         CREATE TABLE users (
             id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -31,10 +31,10 @@ async function main() {
         );
     `);
   } catch (error) {
-    //cacturamos un error por si fuera nacesario en la conexion por prevision
+    //*cacturamos un error por si fuera nacesario en la conexion por prevision
     console.error(error);
   } finally {
-    //cerramos la conexion y devolvemos el cupo a la cola de conexiones para que otro peticion la utilice
+    //*cerramos la conexion y devolvemos el cupo a la cola de conexiones para que otro peticion la utilice
     if (conexiones) conexiones.release();
     process.exit();
   }

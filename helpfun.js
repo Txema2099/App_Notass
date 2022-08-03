@@ -1,10 +1,10 @@
-//funcion de gestion de error simplificada
+//*funcion de gestion de error simplificada
 const generateError = (message, status) => {
   const error = new Error(message);
   error.httpStatus = status;
   return error;
 };
-//exportaciones
+//*exportaciones
 module.exports = {
   generateError,
 };
