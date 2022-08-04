@@ -26,6 +26,7 @@ async function main() {
             user_id INTEGER NOT NULL,
             text VARCHAR(300) NOT NULL,
             image VARCHAR(100),
+            //!crear un bolleano para false-true publica privada
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id)
         );

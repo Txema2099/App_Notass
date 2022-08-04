@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+const { PORT } = process.env;
 const express = require('express');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
@@ -11,13 +11,13 @@ const {
   loginUserController,
 } = require('./controllers/user');
 
-const { PORT } = process.env;
 //*importaciones de notes
 const {
   NewNoteController,
   getNotesController,
   getSingleNoteController,
   deleteNoteController,
+  ModifyNoteController,
 } = require('./controllers/notes');
 
 //*Importacion de autorizacion para crear notes
@@ -39,9 +39,10 @@ app.post('/login', loginUserController);
 app.get('/', getNotesController);
 app.post('/', authUser, NewNoteController);
 app.get('/notes/:id', getSingleNoteController);
+//!añadir put para modificacion de otas por login y token se seguridad de las notas
+app.put('/note/:id', authUser, ModifyNoteController);
 
 app.delete('/notes/:id', deleteNoteController);
-//!añadir post para modificacion de otas por login y token se seguridad de las notas
 
 //*middleware de 404
 app.use((req, res) => {
