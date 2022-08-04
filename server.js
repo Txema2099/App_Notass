@@ -11,6 +11,7 @@ const {
   loginUserController,
 } = require('./controllers/user');
 
+const { PORT } = process.env;
 //*importaciones de notes
 const {
   NewNoteController,
@@ -18,6 +19,9 @@ const {
   getSingleNoteController,
   deleteNoteController,
 } = require('./controllers/notes');
+
+//*Importacion de autorizacion para crear notes
+const { authUser } = require('./middlewares/auth');
 
 const app = express();
 //*midelware json y encoded
@@ -33,9 +37,11 @@ app.post('/login', loginUserController);
 
 //*Rutas Notes
 app.get('/', getNotesController);
-app.post('/', NewNoteController);
+app.post('/', authUser, NewNoteController);
 app.get('/notes/:id', getSingleNoteController);
+
 app.delete('/notes/:id', deleteNoteController);
+//!añadir post para modificacion de otas por login y token se seguridad de las notas
 
 //*middleware de 404
 app.use((req, res) => {
@@ -55,6 +61,6 @@ app.use((error, req, res, next) => {
 });
 
 //*lanzar el servidor
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log('Servidor en Funcionamiento');
 });
