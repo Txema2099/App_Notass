@@ -1,0 +1,20 @@
+{
+  "name": "app_notass",
+  "version": "1.0.0",
+  "description": "TÍTULO App de Notas de texto. DESCRIPCIÓN Implementar una API que permita publicar notas privadas de texto y categorizarlas.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Txema2099/App_Notass.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Txema2099/App_Notass/issues"
+  },
+  "homepage": "https://github.com/Txema2099/App_Notass#readme"
+}

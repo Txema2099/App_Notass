@@ -3,21 +3,21 @@ require(`dotenv`).config();
 //console.log(process.env);
 
 const { getConnection } = require(`./db`);
-
+//fx asincrona gestión db y pool conexiones.
 async function main() {
   //  console.log(`main`);
-  let connection;
+  let conexiones;
   try {
-    connection = await getConnection();
+    conexiones = await getConnection();
 
-    console.log('Borrando tablas existentes');
-    await connection.query(`DROP TABLE IF EXISTS notas`);
-    await connection.query(`DROP TABLE IF EXISTS usuarios`);
+    console.log("Borrando tablas existentes");
+    await conexiones.query(`DROP TABLE IF EXISTS notes`);
+    await conexiones.query(`DROP TABLE IF EXISTS users`);
 
-    console.log('Creando tablas');
+    console.log("Creando tablas");
 
-    await connection.query(`
-    CREATE TABLE usuarios (
+    await conexiones.query(`
+    CREATE TABLE users (
       id INTEGER PRIMARY KEY AUTO_INCREMENT,
       email VARCHAR(100) UNIQUE NOT NULL,
       password VARCHAR(100) NOT NULL,
@@ -25,19 +25,20 @@ async function main() {
     );
   `);
     await connection.query(`
-    CREATE TABLE notas (
+    CREATE TABLE notes (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     user_id INTEGER NOT NULL,
-    text VARCHAR(1000) NOT NULL,
+    text VARCHAR(300) NOT NULL,
     image VARCHAR(100),
+    //boleano para publicación y nota
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES usuarios(id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
     );
 `);
   } catch (error) {
     console.error(error);
   } finally {
-    if (connection) connection.release();
+    if (conexiones) conexiones.release();
     process.exit();
   }
 }

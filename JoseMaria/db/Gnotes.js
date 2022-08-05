@@ -1,6 +1,7 @@
-const { generateError } = require('../helpers');
+//Fx para gestionar la petición de notas
+const { generateError } = require("../helpfun");
 const { getConnection } = require(`./db`);
-
+//Fx eliminación notas
 const deleteNotaBiId = async (id) => {
   let connection;
 
@@ -19,7 +20,7 @@ const deleteNotaBiId = async (id) => {
     if (connection) connection.release();
   }
 };
-
+//Fx asíncrona para la búsqueda de nota por id
 const getNotaByid = async (id) => {
   let connection;
 
@@ -33,7 +34,7 @@ const getNotaByid = async (id) => {
       [id]
     );
     if (result.lenght === 0) {
-      throw generateError(`LA nota con ${id} no existe`, 404);
+      throw generateError(`La nota con ${id} no existe`, 404);
     }
 
     return result[0];
@@ -58,27 +59,27 @@ const getAllNotas = async () => {
   }
 };
 
-const createNota = async (userId, text, image = ``) => {
-  let connection;
+const createNote = async (userId, text, image = ``) => {
+  let conexiones;
 
   try {
-    connection = await getConnection();
+    conexiones = await getConnection();
 
-    const [result] = await connection.query(
+    const [result] = await conexiones.query(
       `
-    INSERT INTO notas (user_id, text, image)
+    INSERT INTO notes (user_id, text, image)
     VALUES(?, ?, ?)
     `,
       [userId, text, image]
     );
     return result.insertId;
   } finally {
-    if (connection) connection.release();
+    if (conexiones) conexiones.release();
   }
 };
 
 module.exports = {
-  createNota,
+  createNote,
   getAllNotas,
   getNotaByid,
   deleteNotaBiId,
