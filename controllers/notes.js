@@ -11,10 +11,10 @@ const { generateError } = require('../helpfun');
 //*peticion gestion de nueva nota
 const NewNoteController = async (req, res, next) => {
   try {
-    const { text } = req.body;
-    if (!text || text.length > 300) {
+    const { text, Titulo, categoria } = req.body;
+    if (!text || text.length > 300 || !Titulo || !categoria) {
       throw generateError(
-        'Debe escribir texto en la nota y ser menos de 300 caracteres',
+        'Debe escribir texto, Titulo y categoria en la nota y el texto ser menor de 300 caracteres',
         400
       );
     }
@@ -29,13 +29,13 @@ const NewNoteController = async (req, res, next) => {
     next(error);
   }
 };
-//!crear una gestion de funcion async para gestion de modifinote
+//*crear una gestion de funcion async para gestion de modifinote
 const ModifyNoteController = async (req, res, next) => {
   try {
-    const { text } = req.body;
-    if (!text || text.length > 300) {
+    const { text, Titulo, categoria } = req.body;
+    if (!text || text.length > 300 || !Titulo || !categoria) {
       throw generateError(
-        'Debe escribir texto en la nota y ser menos de 300 caracteres',
+        'Debe escribir texto, Titulo y categoria en la nota y el texto ser menor de 300 caracteres',
         400
       );
     }
@@ -73,7 +73,7 @@ const deleteNoteController = async (req, res, next) => {
     //*sacar info de la nota que quiero borrar
     const nota = await getNotaByid(id);
 
-    //comprobar que le usuario del token creó la nota
+    //*comprobar que le usuario del token creó la nota
     if (req.userId !== nota.userId) {
       throw generateError(
         `Estás tratando de borrar una nota no escrito por Usted`,

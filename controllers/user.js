@@ -4,21 +4,12 @@ const { generateError } = require('../helpfun');
 const { createUser, getUserById, getUserByEmail } = require('../db/encrycter');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
-
-//*esquema de validacion de datos de registro y login
-const eventSchemaregistrer = Joi.object().keys({
-  email: Joi.string().email().required(),
-  password: Joi.string().required(),
-});
+const eventSchemaregistrer = require('../middlewares/schema');
 
 //*Peticion de nuevo user
 const NewUserController = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    //!email y password gestionar y sustituir con join
-    if (!email || !password) {
-      throw generateError('Debes enviar un email y una password', 400);
-    }
 
     //*email y password gestionar con join
     await eventSchemaregistrer.validateAsync(req.body);
@@ -53,10 +44,9 @@ const loginUserController = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    //!gestion con Joi
-    if (!email || !password) {
-      throw generateError('Debes enviar un email y uana password', 400);
-    }
+    //*email y password gestionar con join
+    await eventSchemaregistrer.validateAsync(req.body);
+
     //*recojer los datos de usuario con email
     const userEmail = await getUserByEmail(email);
     //*Compruebo que las contraseñas con correctas

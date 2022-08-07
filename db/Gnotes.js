@@ -36,7 +36,7 @@ const getNotaByid = async (id) => {
       [id]
     );
     if (result.lenght === 0) {
-      throw generateError(`LA nota con no existe`, 404);
+      throw generateError(`La nota no existe`, 404);
     }
 
     return result[0];
@@ -60,16 +60,18 @@ const getAllNotas = async () => {
     if (connection) connection.release();
   }
 };
-const createNote = async (userId, text, image = '') => {
+
+//*modificar createnote para incluir titulo y categorias
+const createNote = async (userId, text, image = '', Titulo, categoria) => {
   let conexiones;
   try {
     conexiones = await getConnection();
     const { result } = await conexiones.query(
       `
-    INSET INTO notes (user_id, text, image),
-    VALUES(?,?,?)
+    INSET INTO notes (user_id, text, image, Titulo, categoria),
+    VALUES(?,?,?,?,?)
     `,
-      [userId, text, image]
+      [userId, text, image, Titulo, categoria]
     );
 
     return result.insertId;
@@ -77,12 +79,36 @@ const createNote = async (userId, text, image = '') => {
     if (conexiones) conexiones.release();
   }
 };
-//!modificar createnote para incluir titulo y categorias
-//!crear una funcion de modificar notes para modificacion de notas por id usuario tokenizado
+//*crear una funcion de modificar notes para modificacion de notas por id usuario tokenizado
+const ModifyNote = async (
+  userId,
+  text,
+  image = '',
+  Titulo,
+  categoria,
+  active
+) => {
+  let conexiones;
+  try {
+    conexiones = await getConnection();
+    const { result } = await conexiones.query(
+      `
+    UPDATE notes SET (text, image, Titulo, categoria, active),
+    VALUES(?,?,?,?,?)
+    `,
+      [text, image, Titulo, categoria, active]
+    );
+
+    return result.insertId;
+  } finally {
+    if (conexiones) conexiones.release();
+  }
+};
 //*exportaciones
 module.exports = {
   createNote,
   getAllNotas,
   getNotaByid,
   deleteNotaBiId,
+  ModifyNote,
 };

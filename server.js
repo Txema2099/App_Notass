@@ -22,6 +22,7 @@ const {
 
 //*Importacion de autorizacion para crear notes
 const { authUser } = require('./middlewares/auth');
+const { CantEdit } = require('./middlewares/CantEdit');
 
 const app = express();
 //*midelware json y encoded
@@ -37,12 +38,12 @@ app.post('/login', loginUserController);
 
 //*Rutas Notes
 app.get('/', getNotesController);
-app.post('/', authUser, NewNoteController);
+app.post('/', authUser, CantEdit, NewNoteController);
 app.get('/notes/:id', getSingleNoteController);
 //!añadir put para modificacion de otas por login y token se seguridad de las notas
-app.put('/note/:id', authUser, ModifyNoteController);
+app.put('/note/:id', authUser, CantEdit, ModifyNoteController);
 
-app.delete('/notes/:id', deleteNoteController);
+app.delete('/notes/:id', authUser, CantEdit, deleteNoteController);
 
 //*middleware de 404
 app.use((req, res) => {

@@ -17,6 +17,7 @@ async function main() {
             id INTEGER PRIMARY KEY AUTO_INCREMENT,
             email VARCHAR(100) UNIQUE NOT NULL,
             password VARCHAR(100) NOT NULL,
+            //!crear si da tiempo name, avatar, role, registrocode para verificacion email, recovercode , authupdate.
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
   `);
@@ -26,13 +27,17 @@ async function main() {
             user_id INTEGER NOT NULL,
             text VARCHAR(300) NOT NULL,
             image VARCHAR(100),
-            //!crear un bolleano para false-true publica privada
+            //* crea un line para Titulo y Categoria de la nota
+            Titulo VARCHAR(80) NOT NULL,
+            categoria VARCHAR(50)NOT NULL,
+            //*crear un bolleano para false(privada)-true(publica)
+            active BOOLEAN DEFAULT false,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id)
         );
     `);
   } catch (error) {
-    //*cacturamos un error por si fuera nacesario en la conexion por prevision
+    //*capturamos un error por si fuera necesario en la conexion por prevision
     console.error(error);
   } finally {
     //*cerramos la conexion y devolvemos el cupo a la cola de conexiones para que otro peticion la utilice
