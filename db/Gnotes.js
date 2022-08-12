@@ -92,10 +92,10 @@ const ModifyNote = async (
     conexiones = await getConnection();
     const { result } = await conexiones.query(
       `
-    UPDATE notes SET (text, image, categoria, titulo, active),
-    VALUES(?,?,?,?,?)
+    UPDATE notes SET (user_id, text, image, categoria, titulo, active),
+    VALUES(?,?,?,?,?,?)
     `,
-      [text, image, categoria, titulo, active]
+      [userId, text, image, categoria, titulo, active]
     );
 
     return result.insertId;
@@ -109,4 +109,5 @@ module.exports = {
   getAllNotas,
   getNotaByid,
   deleteNotaBiId,
+  ModifyNote,
 };

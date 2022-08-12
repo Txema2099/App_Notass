@@ -1,4 +1,4 @@
-//importo fx de ../db/notas
+//importo fx de ../db/Gnotes.js
 const path = require(`path`);
 const sharp = require(`sharp`);
 const uuid = require(`uuid`);
@@ -7,6 +7,7 @@ const {
   getAllNotas,
   getNotaByid,
   deleteNotaBiId,
+  ModifyNote,
 } = require("../db/Gnotes");
 const { generateError, createPathIfNotExists } = require("../helpfun");
 //createPathIfNotExists;
@@ -15,7 +16,7 @@ const newNoteController = async (req, res, next) => {
   try {
     //    console.log(req.body);
     //    console.log(req.files);
-    const { text } = req.body;
+    const { text, categoria, titulo } = req.body;
 
     if (!text || text.length > 300) {
       throw generateError(
@@ -45,7 +46,13 @@ const newNoteController = async (req, res, next) => {
       //devuelvo nombre del archivo
       //return imageFilename;
     }
-    const id = await createNote(req.userId, text, imageFilename);
+    const id = await createNote(
+      req.userId,
+      text,
+      imageFilename,
+      categoria,
+      titulo
+    );
 
     res.send({
       status: "ok",
@@ -59,7 +66,7 @@ const newNoteController = async (req, res, next) => {
 //!crear una gestion de funcion async para gestion de modifinote
 const ModifyNoteController = async (req, res, next) => {
   try {
-    const { text } = req.body;
+    const { text, categoria, titulo, active } = req.body;
     if (!text || text.length > 300) {
       throw generateError(
         "Debe escribir texto en la nota y ser menos de 300 caracteres",
@@ -67,7 +74,7 @@ const ModifyNoteController = async (req, res, next) => {
       );
     }
 
-    const id = await ModifyNote(req.userId, text);
+    const id = await ModifyNote(req.userId, text, categoria, titulo, active);
 
     res.send({
       status: "ok",
