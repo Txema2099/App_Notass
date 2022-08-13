@@ -12,7 +12,7 @@ const deleteNotaBiId = async (id) => {
 
     await connection.query(
       `
-      DELETE FROM notas WHERE id = ?
+      DELETE FROM notes WHERE id = ?
     `,
       [id]
     );
@@ -31,7 +31,7 @@ const getNotaByid = async (id) => {
 
     const [result] = await connection.query(
       `
-      SELECT * FROM notas WHERE id = ?
+      SELECT * FROM notes WHERE id = ?
     `,
       [id]
     );
@@ -52,7 +52,7 @@ const getAllNotas = async () => {
     connection = await getConnection();
 
     const [result] = await connection.query(`
-      SELECT * FROM notas ORDER BY created_at DESC
+      SELECT * FROM notes ORDER BY created_at DESC
     `);
 
     return result;
@@ -93,10 +93,10 @@ const ModifyNote = async (
     conexiones = await getConnection();
     const { result } = await conexiones.query(
       `
-    UPDATE notes SET (text, image, Titulo, categoria, active),
-    VALUES(?,?,?,?,?)
+    UPDATE notes SET (user_id, text, image, Titulo, categoria, active),
+    VALUES(?,?,?,?,?,?)
     `,
-      [text, image, Titulo, categoria, active]
+      [userId, text, image, Titulo, categoria, active]
     );
 
     return result.insertId;

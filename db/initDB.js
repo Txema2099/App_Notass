@@ -12,12 +12,12 @@ async function main() {
     await conexiones.query('DROP TABLE IF EXISTS notes');
     await conexiones.query('DROP TABLE IF EXISTS users');
     //*creacion y resteo de tablas desde 0
+    //!crear si da tiempo name, avatar, role, registrocode para verificacion email, recovercode , authupdate.
     await conexiones.query(`
         CREATE TABLE users (
             id INTEGER PRIMARY KEY AUTO_INCREMENT,
             email VARCHAR(100) UNIQUE NOT NULL,
             password VARCHAR(100) NOT NULL,
-            //!crear si da tiempo name, avatar, role, registrocode para verificacion email, recovercode , authupdate.
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
   `);
@@ -27,10 +27,8 @@ async function main() {
             user_id INTEGER NOT NULL,
             text VARCHAR(300) NOT NULL,
             image VARCHAR(100),
-            //* crea un line para Titulo y Categoria de la nota
             Titulo VARCHAR(80) NOT NULL,
-            categoria VARCHAR(50)NOT NULL,
-            //*crear un bolleano para false(privada)-true(publica)
+            categoria VARCHAR(50) NOT NULL,
             active BOOLEAN DEFAULT false,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id)

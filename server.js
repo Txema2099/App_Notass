@@ -25,11 +25,14 @@ const { authUser } = require('./middlewares/auth');
 const { CantEdit } = require('./middlewares/CantEdit');
 
 const app = express();
+
 //*midelware json y encoded
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(fileUpload());
 app.use(morgan('dev'));
+//*Middleware para hacer la imagen estatica
+app.use(express.static('uploads'));
 
 //*rutas Users
 app.post('/users', NewUserController);
@@ -38,10 +41,10 @@ app.post('/login', loginUserController);
 
 //*Rutas Notes
 app.get('/', getNotesController);
-app.post('/', authUser, CantEdit, NewNoteController);
+app.post('/', authUser, NewNoteController);
 app.get('/notes/:id', getSingleNoteController);
-//!añadir put para modificacion de otas por login y token se seguridad de las notas
-app.put('/note/:id', authUser, CantEdit, ModifyNoteController);
+//*añadir put para modificacion de otas por login y token se seguridad de las notas
+app.put('/notes/:id', authUser, CantEdit, ModifyNoteController);
 
 app.delete('/notes/:id', authUser, CantEdit, deleteNoteController);
 

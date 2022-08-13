@@ -4,7 +4,7 @@ const { generateError } = require('../helpfun');
 const { createUser, getUserById, getUserByEmail } = require('../db/encrycter');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
-const eventSchemaregistrer = require('../middlewares/schema');
+const { eventSchemaregistrer } = require('../middlewares/schema');
 
 //*Peticion de nuevo user
 const NewUserController = async (req, res, next) => {

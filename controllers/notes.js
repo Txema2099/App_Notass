@@ -1,3 +1,7 @@
+//*importo fx de ../db/notas
+const path = require(`path`);
+const sharp = require(`sharp`);
+const uuid = require(`uuid`);
 //*importaciones de Gnotes
 const {
   createNote,
@@ -6,7 +10,7 @@ const {
   deleteNotaBiId,
   ModifyNote,
 } = require('../db/Gnotes');
-const { generateError } = require('../helpfun');
+const { generateError, createPathIfNotExists } = require('../helpfun');
 
 //*peticion gestion de nueva nota
 const NewNoteController = async (req, res, next) => {
@@ -18,8 +22,25 @@ const NewNoteController = async (req, res, next) => {
         400
       );
     }
-
-    const id = await createNote(req.userId, text);
+    //*Procesado imagen
+    let imageFilename;
+    if (req.files && req.files.image) {
+      //*Creo el path del directorio uploads
+      const uploadsDir = path.join(__dirname, `../uploads`);
+      console.log(uploadsDir);
+      //*Creo el directorio si no existe
+      await createPathIfNotExists(uploadsDir);
+      //*Proceso imagen.
+      const image = sharp(req.files.image.data);
+      const meta = await image.metadata();
+      image.resize(1000);
+      //*Guardo la imagen con nombre aleatorio en el directorio uploads
+      imageFilename = `upload_${uuid.v4()}.${meta.format}`;
+      await image.toFile(path.join(uploadsDir, imageFilename));
+      //devuelvo nombre del archivo
+      //return imageFilename;
+    }
+    const id = await createNote(req.userId, text, imageFilename);
 
     res.send({
       status: 'ok',
@@ -40,7 +61,7 @@ const ModifyNoteController = async (req, res, next) => {
       );
     }
 
-    const id = await ModifyNote(req.userId, text);
+    const id = await ModifyNote(req.userId, text, categoria, Titulo, active);
 
     res.send({
       status: 'ok',
