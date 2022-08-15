@@ -4,13 +4,13 @@ const jwt = require(`jsonwebtoken`);
 const { generateError } = require(`../helpfun`);
 const { createUser, getUserById, getUserByEmail } = require(`../db/encrypter`);
 const Joi = require(`joi`);
-//const eventSchemaregistrer = require("../middlewares/schema");
+const { eventSchemaregistrer } = require("../middlewares/schema");
 //const { createPoolCluster } = require("mysql2"); //comprobar
 
-const eventSchemaregistrer = Joi.object().keys({
-  email: Joi.string().email().required().max(100),
-  password: Joi.string().required().min(3).max(100).alphanum(),
-});
+//const eventSchemaregistrer = Joi.object().keys({
+//  email: Joi.string().email().required().max(100),
+//  password: Joi.string().required().min(3).max(100).alphanum(),
+//});
 
 //*esquema de validacion de datos de registro y login
 //const eventSchemaregistrer = Joi.object().keys({

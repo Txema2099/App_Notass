@@ -19,6 +19,8 @@ const {
 } = require(`./controllers/notes`);
 //Importo autorización para crear notas
 const { authUser } = require(`./middlewares/auth`);
+const { CantEdit } = require("./middlewares/CantEdit");
+//const { CantEdit } = require("./middlewares/CantEdit");
 //const { CantEdit } = require("./middlewares/CantEdit");
 
 const app = express();
@@ -37,12 +39,12 @@ app.post(`/login`, loginUserController);
 //Rutas de notes
 app.get(`/`, getNotesController),
   //incluyo en el post CanEdit entre las 2 fx previamnet existentes
-  app.post(`/`, authUser, newNoteController),
+  app.post(`/`, authUser, CantEdit, newNoteController),
   app.get(`/notes/:id`, getSingleNoteController),
   //siguiente linea incluyo CantEdit la fx previamente existetesdit
-  app.put("/notes/:id", authUser, ModifyNoteController);
+  app.put("/notes/:id", authUser, CantEdit, ModifyNoteController);
 //siguiente linea incluyo CantEdit la fx previamente existetesdit
-app.delete(`/notes/:id`, authUser, deleteNoteController);
+app.delete(`/notes/:id`, authUser, CantEdit, deleteNoteController);
 //Middleware 404
 app.use((req, res) => {
   res.status(404).send({

@@ -104,9 +104,10 @@ const deleteNoteController = async (req, res, next) => {
 
     // sacar info de la nota que quiero borrar
     const nota = await getNotaByid(id);
-
     //comprobar que le usuario del token creó la nota
-    if (req.userId !== nota.userId) {
+
+    //   if (req.userId !== nota.userId) { comentada para probar la linea de debajo codigo berto
+    if (req.userId !== nota.user_id) {
       throw generateError(
         `Estás tratando de borrar una nota no escrita pot tí`,
         401

@@ -6,8 +6,8 @@ const deleteNotaBiId = async (id) => {
   let connection;
 
   try {
+    // await getConnection();
     connection = await getConnection();
-
     await connection.query(
       `
       DELETE FROM notes WHERE id = ?
@@ -93,6 +93,7 @@ const ModifyNote = async (
     const { result } = await conexiones.query(
       `
     UPDATE notes SET (user_id, text, image, categoria, titulo, active),
+    WHERE(user_id),
     VALUES(?,?,?,?,?,?)
     `,
       [userId, text, image, categoria, titulo, active]
