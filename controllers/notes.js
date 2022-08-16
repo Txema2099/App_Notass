@@ -66,15 +66,24 @@ const newNoteController = async (req, res, next) => {
 //!crear una gestion de funcion async para gestion de modifinote
 const ModifyNoteController = async (req, res, next) => {
   try {
-    const { text, categoria, titulo, active } = req.body;
-    if (!text || text.length > 300) {
+    const { id } = req.params;
+    const { text, image, categoria, titulo, active } = req.body;
+    if (!text || text.length > 300 || !categoria || !titulo) {
       throw generateError(
         "Debe escribir texto en la nota y ser menos de 300 caracteres",
         400
       );
     }
 
-    const id = await ModifyNote(req.userId, text, categoria, titulo, active);
+    const idassist = await ModifyNote(
+      id,
+      req.userId,
+      text,
+      image,
+      categoria,
+      titulo,
+      active
+    );
 
     res.send({
       status: "ok",

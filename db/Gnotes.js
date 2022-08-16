@@ -80,6 +80,7 @@ const createNote = async (userId, text, image = ``, categoria, titulo) => {
 
 //*crear una funcion de modificar notes para modificacion de notas por id usuario tokenizado
 const ModifyNote = async (
+  id,
   userId,
   text,
   image = "",
@@ -90,13 +91,13 @@ const ModifyNote = async (
   let conexiones;
   try {
     conexiones = await getConnection();
-    const { result } = await conexiones.query(
-      `
-    UPDATE notes SET (user_id, text, image, categoria, titulo, active),
-    WHERE(user_id),
-    VALUES(?,?,?,?,?,?)
+    const [result] = await conexiones.query(
+      ` 
+      UPDATE notes
+      SET text='${text}', image='${image}', categoria='${categoria}', active= ${active}, titulo='${titulo}' 
+      WHERE id='${id}'
     `,
-      [userId, text, image, categoria, titulo, active]
+      [id, userId, text, image, categoria, titulo, active]
     );
 
     return result.insertId;
