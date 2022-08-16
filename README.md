@@ -1,18 +1,17 @@
-# App_Notass
 TÍTULO
 App de Notas de texto.
 DESCRIPCIÓN
 Implementar una API que permita publicar notas privadas de texto y categorizarlas.
 
 ANÓNIMO:
-● Login: usando email + contraseña
-● Registro: pide email + contraseña
+● Login: usando email + contraseña ok
+● Registro: pide email + contraseña pte joi
 
 USUARIOS REGISTRADOS:
 ● Ver su listado de notas (en el listado sólo se ven los títulos)
-● Visualizar una nota
+● Visualizar una nota ok
 ● Crear una nota: título, texto y categoría única (fijas).
-● Modificar sus notas: título, texto y categoría
+● Modificar sus notas: título, texto y categoría. ok
 ● Opcional:
 ○ Marcar una nota como pública:
 Por defecto todas las notas son privadas y solo puede verlas el usuario que las
