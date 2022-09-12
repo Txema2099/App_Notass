@@ -8,3 +8,5 @@ const eventSchemaregistrer = Joi.object().keys({
 module.exports = {
   eventSchemaregistrer,
 };
+
+//! crear esquemas de cara una de los endpoint con diferecios a su utilizacion

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { PORT } = process.env;
 const express = require('express');
+const cors = require('cors');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
 
@@ -29,6 +30,7 @@ const app = express();
 //*midelware json y encoded
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 app.use(fileUpload());
 app.use(morgan('dev'));
 //*Middleware para hacer la imagen estatica
@@ -36,13 +38,13 @@ app.use(express.static('uploads'));
 
 //*rutas Users
 app.post('/users', NewUserController);
-app.get('/users/:id', getUserController);
+app.get('/users/:id', authUser, getUserController);
 app.post('/login', loginUserController);
 
 //*Rutas Notes
-app.get('/', getNotesController);
-app.post('/', authUser, NewNoteController);
-app.get('/notes/:id', getSingleNoteController);
+app.get('/notes', authUser, getNotesController);
+app.post('/notes', authUser, NewNoteController);
+app.get('/notes/:id', authUser, getSingleNoteController);
 //*añadir put para modificacion de otas por login y token se seguridad de las notas
 app.put('/notes/:id', authUser, CantEdit, ModifyNoteController);
 

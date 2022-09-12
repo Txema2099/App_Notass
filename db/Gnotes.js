@@ -23,6 +23,7 @@ const deleteNotaBiId = async (id) => {
   }
 };
 //*funcion gestion async para buscar nota por id
+//!comparativa de user
 const getNotaByid = async (id) => {
   let connection;
 
@@ -35,7 +36,7 @@ const getNotaByid = async (id) => {
     `,
       [id]
     );
-    if (result.lenght === 0) {
+    if (result.length == 0) {
       throw generateError(`La nota no existe`, 404);
     }
 
@@ -45,6 +46,7 @@ const getNotaByid = async (id) => {
   }
 };
 //*funcion gestion async para todas las notas usuario , publicada o no
+//!no limita usuario registrado
 const getAllNotas = async () => {
   let connection;
 
@@ -62,13 +64,14 @@ const getAllNotas = async () => {
 };
 
 //*modificar createnote para incluir titulo y categorias
-const createNote = async (userId, text, image = '', Titulo, categoria) => {
+const createNote = async (userId, text, image = ``, Titulo, categoria) => {
   let conexiones;
   try {
     conexiones = await getConnection();
-    const { result } = await conexiones.query(
+
+    const [result] = await conexiones.query(
       `
-    INSET INTO notes (user_id, text, image, Titulo, categoria),
+    INSERT INTO notes (user_id, text, image, Titulo, categoria)
     VALUES(?,?,?,?,?)
     `,
       [userId, text, image, Titulo, categoria]
@@ -81,25 +84,28 @@ const createNote = async (userId, text, image = '', Titulo, categoria) => {
 };
 //*crear una funcion de modificar notes para modificacion de notas por id usuario tokenizado
 const ModifyNote = async (
+  id,
   userId,
   text,
   image = '',
   Titulo,
   categoria,
-  active
+  Public
 ) => {
   let conexiones;
   try {
     conexiones = await getConnection();
-    const { result } = await conexiones.query(
-      `
-    UPDATE notes SET (user_id, text, image, Titulo, categoria, active),
-    VALUES(?,?,?,?,?,?)
-    `,
-      [userId, text, image, Titulo, categoria, active]
-    );
 
-    return result.insertId;
+    const [result] = await conexiones.query(
+      `
+      UPDATE notes
+      SET text=?, Titulo=?, categoria=?, Public=?, image=?
+      WHERE id=?
+
+      `,
+      [text, Titulo, categoria, Public, image, id]
+    );
+    return result.InsertId;
   } finally {
     if (conexiones) conexiones.release();
   }

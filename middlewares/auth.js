@@ -14,7 +14,7 @@ const authUser = (req, res, next) => {
       throw generateError('Token de autorizacion incorrecto', 401);
     }
     //*metemos las informamcion de la req en el controlador
-    req.auth = token;
+    req.userId = token.id;
 
     next();
   } catch (error) {

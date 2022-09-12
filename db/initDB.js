@@ -21,6 +21,7 @@ async function main() {
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
   `);
+    //!registercode para linkear sobre codigo y no sobre id
     await conexiones.query(`
         CREATE TABLE notes (
             id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -29,7 +30,8 @@ async function main() {
             image VARCHAR(100),
             Titulo VARCHAR(80) NOT NULL,
             categoria VARCHAR(50) NOT NULL,
-            active BOOLEAN DEFAULT false,
+            Public BOOLEAN DEFAULT false,
+
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id)
         );

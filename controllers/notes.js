@@ -4,6 +4,7 @@ const sharp = require(`sharp`);
 const uuid = require(`uuid`);
 //*importaciones de Gnotes
 const {
+  //!colocar esquemas joi a todoas las funciones de rutas
   createNote,
   getAllNotas,
   getNotaByid,
@@ -40,7 +41,13 @@ const NewNoteController = async (req, res, next) => {
       //devuelvo nombre del archivo
       //return imageFilename;
     }
-    const id = await createNote(req.userId, text, imageFilename);
+    const id = await createNote(
+      req.userId,
+      text,
+      imageFilename,
+      Titulo,
+      categoria
+    );
 
     res.send({
       status: 'ok',
@@ -53,7 +60,8 @@ const NewNoteController = async (req, res, next) => {
 //*crear una gestion de funcion async para gestion de modifinote
 const ModifyNoteController = async (req, res, next) => {
   try {
-    const { text, Titulo, categoria } = req.body;
+    const { id } = req.params;
+    const { text, image, Titulo, categoria, Public } = req.body;
     if (!text || text.length > 300 || !Titulo || !categoria) {
       throw generateError(
         'Debe escribir texto, Titulo y categoria en la nota y el texto ser menor de 300 caracteres',
@@ -61,7 +69,15 @@ const ModifyNoteController = async (req, res, next) => {
       );
     }
 
-    const id = await ModifyNote(req.userId, text, categoria, Titulo, active);
+    const idpet = await ModifyNote(
+      id,
+      req.userId,
+      text,
+      image,
+      Titulo,
+      categoria,
+      Public
+    );
 
     res.send({
       status: 'ok',
@@ -95,7 +111,7 @@ const deleteNoteController = async (req, res, next) => {
     const nota = await getNotaByid(id);
 
     //*comprobar que le usuario del token creó la nota
-    if (req.userId !== nota.userId) {
+    if (req.userId !== nota.user_id) {
       throw generateError(
         `Estás tratando de borrar una nota no escrito por Usted`,
         401
@@ -105,7 +121,7 @@ const deleteNoteController = async (req, res, next) => {
     await deleteNotaBiId(id);
     res.send({
       status: `ok`,
-      message: `la nota con Titulo: ${Titulo} ha sido borrada`,
+      message: `la nota ha sido borrada correctamente`,
     });
   } catch (error) {
     next(error);
