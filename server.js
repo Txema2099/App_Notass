@@ -1,6 +1,7 @@
 require(`dotenv`).config();
 const { PORT } = process.env;
 const express = require(`express`);
+const cors = require("cors");
 const morgan = require(`morgan`);
 const fileUpload = require(`express-fileupload`);
 
@@ -27,20 +28,21 @@ const app = express();
 
 app.use(fileUpload());
 app.use(express.json());
+app.use(cors());
 app.use(morgan(`dev`));
 //Middleware para hacer la imagen estatica
 app.use(express.static(`uploads`));
 app.use(express.urlencoded({ extended: true }));
 //Rutas de users
 app.post(`/users`, newUserCoontroller);
-app.get(`/users/:id`, getUserController);
+app.get(`/users/:id`, authUser, getUserController);
 app.post(`/login`, loginUserController);
 
 //Rutas de notes
-app.get(`/`, getNotesController),
+app.get(`/notes`, authUser, getNotesController),
   //incluyo en el post CanEdit entre las 2 fx previamnet existentes
-  app.post(`/`, authUser, CantEdit, newNoteController),
-  app.get(`/notes/:id`, getSingleNoteController),
+  app.post(`/`, authUser, newNoteController),
+  app.get(`/notes/:id`, authUser, getSingleNoteController),
   //siguiente linea incluyo CantEdit la fx previamente existetesdit
   app.put("/notes/:id", authUser, CantEdit, ModifyNoteController);
 //siguiente linea incluyo CantEdit la fx previamente existetesdit
