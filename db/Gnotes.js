@@ -86,7 +86,7 @@ const ModifyNote = async (
   image = "",
   categoria,
   titulo,
-  active
+  Public
 ) => {
   let conexiones;
   try {
@@ -94,10 +94,10 @@ const ModifyNote = async (
     const [result] = await conexiones.query(
       ` 
       UPDATE notes
-      SET text='${text}', image='${image}', categoria='${categoria}', active= ${active}, titulo='${titulo}' 
+      SET text=?, image=?, categoria=?, Public= ?, titulo=? 
       WHERE id='${id}'
     `,
-      [id, userId, text, image, categoria, titulo, active]
+      [id, userId, text, image, categoria, titulo, Public]
     );
 
     return result.insertId;

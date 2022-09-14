@@ -33,7 +33,7 @@ async function main() {
       image VARCHAR(100),
       categoria VARCHAR (50),
       titulo VARCHAR (80),
-      active BOOLEAN DEFAULT false, 
+      Public BOOLEAN DEFAULT false, 
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES users(id)
       );

@@ -67,7 +67,7 @@ const newNoteController = async (req, res, next) => {
 const ModifyNoteController = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { text, image, categoria, titulo, active } = req.body;
+    const { text, image, categoria, titulo, Public } = req.body;
     if (!text || text.length > 300 || !categoria || !titulo) {
       throw generateError(
         "Debe escribir texto en la nota y ser menos de 300 caracteres",
@@ -82,7 +82,7 @@ const ModifyNoteController = async (req, res, next) => {
       image,
       categoria,
       titulo,
-      active
+      Public
     );
 
     res.send({
