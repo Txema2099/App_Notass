@@ -4,7 +4,7 @@ const sharp = require(`sharp`);
 const uuid = require(`uuid`);
 //*importaciones de Gnotes
 const {
-  //!colocar esquemas joi a todoas las funciones de rutas
+  //!colocar esquemas joi a todas las funciones de rutas
   createNote,
   getAllNotas,
   getNotaByid,
