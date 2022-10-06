@@ -25,7 +25,7 @@ const getUserByEmail = async (email) => {
 };
 
 //*crea una funcion de llamada de infomacion publica de usuario por id
-const getUserById = async (id) => {
+const getUserById = async (id, includenotes = true) => {
   let conexiones;
   try {
     conexiones = await getConnection();

@@ -4,7 +4,7 @@ const { getConnection } = require('./db');
 const { generateError } = require('../helpfun');
 
 //*funcion async gestion de eliminar nota
-const deleteNotaBiId = async (id) => {
+const deleteNotaById = async (id) => {
   let connection;
 
   try {
@@ -32,7 +32,7 @@ const getNotaByid = async (id) => {
 
     const [result] = await connection.query(
       `
-      SELECT * FROM notes WHERE id = ?
+      SELECT notes.id, notes.user_id, notes.text, notes.image, notes.titulo, notes.categoria, notes.active , notes.created_at, users.email FROM notes LEFT JOIN users on notes.user_id = users.id WHERE notes.id = ?
     `,
       [id]
     );
@@ -45,6 +45,26 @@ const getNotaByid = async (id) => {
     if (connection) connection.release();
   }
 };
+//*Gestion de peticion de notas de user
+const getNotesByUserId = async (id) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const [result] = await connection.query(
+      `
+          SELECT notes.*, users.email FROM notes LEFT JOIN users on notes.user_id = users.id WHERE notes.user_id = ?
+    `,
+      [id]
+    );
+
+    return result;
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 //*funcion gestion async para todas las notas usuario , publicada o no
 //!no limita usuario registrado
 const getAllNotas = async () => {
@@ -54,7 +74,7 @@ const getAllNotas = async () => {
     connection = await getConnection();
 
     const [result] = await connection.query(`
-      SELECT * FROM notes ORDER BY created_at DESC
+    SELECT notes.id, notes.user_id, notes.text, notes.image,notes.titulo,notes.categoria,notes.active ,  notes.created_at, users.email FROM notes LEFT JOIN users on notes.user_id = users.id WHERE notes.active = 1 ORDER BY notes.created_at DESC
     `);
 
     return result;
@@ -115,6 +135,7 @@ module.exports = {
   createNote,
   getAllNotas,
   getNotaByid,
-  deleteNotaBiId,
+  deleteNotaById,
   ModifyNote,
+  getNotesByUserId,
 };

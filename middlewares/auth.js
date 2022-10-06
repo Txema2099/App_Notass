@@ -1,15 +1,18 @@
+//*importacion de gestion de errores
 const { generateError } = require('../helpfun');
+//*importacion de gestion token authorization
 const jwt = require('jsonwebtoken');
+
 const authUser = (req, res, next) => {
   try {
-    const { autorization } = req.headers;
-    if (!autorization) {
+    const { authorization } = req.headers;
+    if (!authorization) {
       throw generateError('Falta autorizacion para esta acccion', 401);
     }
     //*comprobacion del token
     let token;
     try {
-      token = jwt.verify(autorization, process.env.SECRET);
+      token = jwt.verify(authorization, process.env.SECRET);
     } catch {
       throw generateError('Token de autorizacion incorrecto', 401);
     }

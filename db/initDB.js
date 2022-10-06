@@ -15,7 +15,8 @@ async function main() {
     //!crear si da tiempo name, avatar, role, registrocode para verificacion email, recovercode , authupdate.
     await conexiones.query(`
         CREATE TABLE users (
-            id INTEGER PRIMARY KEY AUTO_INCREMENT,
+            id INTEGER PRIMARY KEY AUTO_INCREMENT
+            name VARCHAR(50),
             email VARCHAR(100) UNIQUE NOT NULL,
             password VARCHAR(100) NOT NULL,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -28,12 +29,12 @@ async function main() {
             user_id INTEGER NOT NULL,
             text VARCHAR(300) NOT NULL,
             image VARCHAR(100),
-            Titulo VARCHAR(80) NOT NULL,
-            categoria VARCHAR(50) NOT NULL,
-            Public BOOLEAN DEFAULT false,
-
+            titulo VARCHAR(80) NOT NULL,
+            categoria ENUM('Por Hacer','Ya Hecho', 'Trabajo','Casa') NOT NULL,
+            Public BOOLEAN DEFAULT false
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id)
+           
         );
     `);
   } catch (error) {
@@ -45,4 +46,4 @@ async function main() {
     process.exit();
   }
 }
-main();
+main().catch((error) => console.error(error));

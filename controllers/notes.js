@@ -8,7 +8,7 @@ const {
   createNote,
   getAllNotas,
   getNotaByid,
-  deleteNotaBiId,
+  deleteNotaById,
   ModifyNote,
 } = require('../db/Gnotes');
 const { generateError, createPathIfNotExists } = require('../helpfun');
@@ -17,6 +17,8 @@ const { generateError, createPathIfNotExists } = require('../helpfun');
 const NewNoteController = async (req, res, next) => {
   try {
     const { text, Titulo, categoria } = req.body;
+    const idReqUser = req.userId;
+
     if (!text || text.length > 300 || !Titulo || !categoria) {
       throw generateError(
         'Debe escribir texto, Titulo y categoria en la nota y el texto ser menor de 300 caracteres',
@@ -48,10 +50,12 @@ const NewNoteController = async (req, res, next) => {
       Titulo,
       categoria
     );
+    const NewNoteResponse = await getNotaByid(id);
 
     res.send({
       status: 'ok',
       message: 'Nueva nota creada correctamente',
+      data: NewNoteResponse,
     });
   } catch (error) {
     next(error);
@@ -95,7 +99,7 @@ const getSingleNoteController = async (req, res, next) => {
     const nota = await getNotaByid(id);
     res.send({
       status: `ok`,
-      message: nota,
+      data: nota,
     });
   } catch (error) {
     next(error);
@@ -118,7 +122,7 @@ const deleteNoteController = async (req, res, next) => {
       );
     }
     //*Borrar nota
-    await deleteNotaBiId(id);
+    await deleteNotaById(id);
     res.send({
       status: `ok`,
       message: `la nota ha sido borrada correctamente`,

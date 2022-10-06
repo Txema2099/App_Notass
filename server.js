@@ -10,6 +10,8 @@ const {
   NewUserController,
   getUserController,
   loginUserController,
+  getMeController,
+  getUserNotesController,
 } = require('./controllers/user');
 
 //*importaciones de notes
@@ -34,18 +36,22 @@ app.use(cors());
 app.use(fileUpload());
 app.use(morgan('dev'));
 //*Middleware para hacer la imagen estatica
-app.use(express.static('uploads'));
+app.use('/uploads', express.static('uploads'));
 
 //*rutas Users
 app.post('/users', NewUserController);
 app.get('/users/:id', authUser, getUserController);
 app.post('/login', loginUserController);
+app.get('/user', authUser, getMeController);
+app.get('/users/:id/notes', authUser, getUserNotesController);
 
 //*Rutas Notes
-app.get('/notes', authUser, getNotesController);
+
+//*endpoint para lista de notas publicas sin autorizacion de usuario global
+app.get('/notes', getNotesController);
 app.post('/notes', authUser, NewNoteController);
 app.get('/notes/:id', authUser, getSingleNoteController);
-//*añadir put para modificacion de otas por login y token se seguridad de las notas
+//*put para modificacion de otras por login y token se seguridad de las notas
 app.put('/notes/:id', authUser, CantEdit, ModifyNoteController);
 
 app.delete('/notes/:id', authUser, CantEdit, deleteNoteController);

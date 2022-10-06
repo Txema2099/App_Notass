@@ -2,6 +2,7 @@ const { getConnection } = require('../db/db');
 //! hace llamada de notas pero no filtra por user
 const CantEdit = async (req, res, next) => {
   let conexiones;
+
   try {
     conexiones = await getConnection();
     const { id } = req.params;

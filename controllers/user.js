@@ -1,6 +1,7 @@
 //*importaciones
 const bcrypt = require('bcrypt');
 const { generateError } = require('../helpfun');
+const { getNotesByUserId } = require('../db/Gnotes');
 const { createUser, getUserById, getUserByEmail } = require('../db/Guser');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
@@ -25,6 +26,19 @@ const NewUserController = async (req, res, next) => {
     next(error);
   }
 };
+//*Peticion de datos de usuario
+const getMeController = async (req, res, next) => {
+  try {
+    const user = await getUserById(req.userId, false);
+
+    res.send({
+      status: 'ok',
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 //*peticion de user 1id
 const getUserController = async (req, res, next) => {
   try {
@@ -34,6 +48,21 @@ const getUserController = async (req, res, next) => {
     res.send({
       status: 'ok',
       data: userid,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+//*Peticion de llas Notas de usuario
+const getUserNotesController = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const user = await getNotesByUserId(id);
+
+    res.send({
+      status: 'ok',
+      data: user,
     });
   } catch (error) {
     next(error);
@@ -78,4 +107,6 @@ module.exports = {
   NewUserController,
   getUserController,
   loginUserController,
+  getMeController,
+  getUserNotesController,
 };

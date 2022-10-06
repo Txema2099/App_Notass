@@ -24,36 +24,32 @@ sólo se puede acceder si se conoce la URL.
 ○ Crear, editar y borrar categorías
 ○ Imagen: poder asociar una imagen (única) a cada nota.
 
-Como comentado os paso mis notas:
+cosas que quedan:
 
-GIT:
-
-COMO TRABAJASTEIS EN GIT? Veo ramas con vuestros nombres. Yo revisé la rama main
-porque doble s en el nombre del proyecto? App_Notass
-subieron node_modules (poner exclusión en .gitignore)
-no subir uploads con las fotos
-habría puesto en el readme.md también las instrucciones para arrancar la API
+readme.md también las instrucciones para arrancar la API
 Falta la colección postman. Ponerla en el repo.
 
 Requisitos mínimos:
 
 ok pero no hay "protecciones" en las notas que tendrían que ser privadas
 
-Extra:
-
-notas públicas
-
 DB:
 
 DB con solo dos tablas. Habría creado una tabla para las categorias o por lo menos un enum en notes/categoria
+
 "code" y implementar endpoint que devuelve la nota publica que coincide con el code (che paso por param en la url como en la validación usuario de diario de viaje)
 
 API:
 
 en el middleware canEdit no se hace ningun check, solo hacen la query al DB
 
-Quitar canEdit en la creación de la nota
+no cantedit en la creacion de notas
+
 Utilizar Joi en todos los endpoint
-GetNotes devuelve las notas de todo el mundo!! NO. Son privadas. Controlar usuario que hace la petición.
-En general un usuario puede leer, borrar y editar solo sus notas, revisar esto.
-get notes devuelve todo!
+getUser, getNotes y getNote sin token? NO
+
+GetNotes devuelve las notas de todo el mundo!! NO. Son privadas.
+
+Controlar usuario que hace la petición.
+(En general un usuario puede leer, borrar y editar solo sus notas, revisar esto.
+get notes devuelve todo!)
